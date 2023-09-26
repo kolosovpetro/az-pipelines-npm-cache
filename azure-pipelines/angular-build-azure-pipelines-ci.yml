@@ -11,6 +11,9 @@ pr:
       - develop
       - master
 
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/.npm
+
 stages:
   - stage: 'Build_Angular'
     displayName: "Build Angular"
@@ -34,13 +37,24 @@ stages:
             inputs:
               versionSpec: '18.x'
 
+          - task: Cache@2
+            inputs:
+              key: 'package-lock.json'
+              path: $(npm_config_cache)
+            displayName: Cache NPM packages
+
           - script: |
               npm install -g @angular/cli@15.2.9
             displayName: 'Install Angular CLI'
 
           - script: |
-              npm ci
+              npm ci --cache $(npm_config_cache)
             displayName: 'Npm CI'
+
+          - script: |
+              npm cache ls
+              npm cache verify
+            displayName: NPM Show cache
 
           - script: |
               npm run build
