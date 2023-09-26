@@ -12,7 +12,8 @@ pr:
       - master
 
 variables:
-  npm_config_cache: $(Pipeline.Workspace)/.npm
+  npm_config_cache: '$(Pipeline.Workspace)/.npm'
+  system.debug: 'true'
 
 stages:
   - stage: 'Build_Angular'
@@ -39,8 +40,10 @@ stages:
 
           - task: Cache@2
             inputs:
-              key: 'package-lock.json'
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
               path: $(npm_config_cache)
+              restoreKeys: |
+                npm | "$(Agent.OS)"
             displayName: Cache NPM packages
 
           - script: |
@@ -48,7 +51,7 @@ stages:
             displayName: 'Install Angular CLI'
 
           - script: |
-              npm ci --cache $(npm_config_cache)
+              npm ci
             displayName: 'Npm CI'
 
           - script: |
