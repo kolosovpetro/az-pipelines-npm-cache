@@ -1,0 +1,47 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - develop
+      - master
+
+pr:
+  branches:
+    include:
+      - develop
+      - master
+
+stages:
+  - stage: 'Build_Angular'
+    displayName: "Build Angular"
+    jobs:
+      - job: 'Build_Angular'
+        displayName: 'Build Angular'
+        strategy:
+          matrix:
+            windows:
+              imageName: 'windows-latest'
+            linux:
+              imageName: 'ubuntu-latest'
+        pool:
+          vmImage: $(imageName)
+        steps:
+          - checkout: self
+            fetchDepth: 0
+
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '18.x'
+
+          - script: |
+              npm install -g @angular/cli@15.2.9
+            displayName: 'Install Angular CLI'
+
+          - script: |
+              npm ci
+            displayName: 'Npm CI'
+
+          - script: |
+              npm run build
+            displayName: 'NPM run build'
