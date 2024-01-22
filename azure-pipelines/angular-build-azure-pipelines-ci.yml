@@ -63,9 +63,15 @@ stages:
               npm run build
             displayName: 'NPM run build'
 
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/az-pipeline-npm-cache'
+              archiveType: 'zip' # 'zip' | '7z' | 'tar' | 'wim'. Required. Archive type. Default: zip.
+              archiveFile: '$(Build.ArtifactStagingDirectory)/drop-$(imageName).zip'
+
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact: drop'
             inputs:
-              PathtoPublish: '$(System.DefaultWorkingDirectory)/dist/az-pipeline-npm-cache'
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop-$(imageName)' # from matrix
               publishLocation: 'Container'
