@@ -67,5 +67,5 @@ stages:
             displayName: 'Publish Artifact: drop'
             inputs:
               PathtoPublish: '$(System.DefaultWorkingDirectory)/dist/az-pipeline-npm-cache'
-              ArtifactName: 'drop'
+              ArtifactName: 'drop-$(imageName)' # from matrix
               publishLocation: 'Container'
