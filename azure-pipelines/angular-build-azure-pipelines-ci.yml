@@ -62,3 +62,10 @@ stages:
           - script: |
               npm run build
             displayName: 'NPM run build'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact: drop'
+            inputs:
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/dist/az-pipeline-npm-cache'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
