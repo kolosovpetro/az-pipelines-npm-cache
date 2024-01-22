@@ -66,6 +66,7 @@ stages:
           - task: ArchiveFiles@2
             inputs:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/az-pipeline-npm-cache'
+              includeRootFolder: 'false'
               archiveType: 'zip' # 'zip' | '7z' | 'tar' | 'wim'. Required. Archive type. Default: zip.
               archiveFile: '$(Build.ArtifactStagingDirectory)/drop-$(imageName).zip'
 
