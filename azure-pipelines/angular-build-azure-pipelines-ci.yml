@@ -102,7 +102,7 @@ stages:
           - group: devtest.team_wildcard_certificate
           - group: IIS_Settings
         environment:
-          name: dev
+          name: angulardev
           resourceType: VirtualMachine
         strategy:
           runOnce:
